@@ -47,6 +47,31 @@
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const navActions = document.querySelector('header .flex.items-center.gap-6');
+            if (navActions) {
+                const cartBtn = navActions.querySelector('a[href="carrinho.html"]');
+                if (cartBtn) {
+                    const badge = cartBtn.querySelector('span:last-child');
+                    if (badge) badge.id = 'cart-badge';
+                }
+                const loginBtn = navActions.querySelector('a[href="login.html"]');
+                if (loginBtn) loginBtn.id = 'nav-login';
+                
+                const logoutBtn = document.createElement('button');
+                logoutBtn.id = 'nav-logout';
+                logoutBtn.className = 'hidden text-sm font-bold text-primary hover:underline';
+                logoutBtn.textContent = 'Sair';
+                navActions.insertBefore(logoutBtn, loginBtn);
+
+                const userGreet = document.createElement('span');
+                userGreet.id = 'nav-user-name';
+                userGreet.className = 'text-sm font-medium text-white hidden md:block';
+                navActions.insertBefore(userGreet, logoutBtn);
+            }
+        });
+    </script>
 <!-- Top Navigation Bar -->
 <header class="border-b border-slate-200 dark:border-border-dark bg-white/50 dark:bg-background-dark/50 backdrop-blur-md sticky top-0 z-50">
 <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -59,8 +84,8 @@
 </a>
 <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500 dark:text-slate-400">
 <a class="hover:text-primary transition-colors" href="loja.html">Loja</a>
-<a class="hover:text-primary transition-colors" href="#">Assinaturas</a>
-<a class="hover:text-primary transition-colors" href="#">Coleções</a>
+<a class="hover:text-primary transition-colors" href="login.html">Assinaturas</a>
+<a class="hover:text-primary transition-colors" href="edicoes_passadas.html">Coleções</a>
 <a class="hover:text-primary transition-colors" href="sobre.html">Sobre</a>
 </nav>
 </div>
@@ -91,7 +116,7 @@
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
 <!-- Shopping Bag Content (Left) -->
-<div class="lg:col-span-7 space-y-8">
+<div class="lg:col-span-7 space-y-8" id="cart-items-container">
 <!-- Items List -->
 <div class="space-y-6">
 <!-- Item 1: Subscription -->
@@ -129,7 +154,7 @@
 <!-- Item 2: Individual Record -->
 <div class="flex gap-6 pb-6 border-b border-slate-200 dark:border-border-dark items-center">
 <div class="w-32 h-32 bg-slate-200 dark:bg-surface-dark rounded-xl overflow-hidden shadow-lg border border-white/5">
-<img alt="The Dark Side of the Moon" class="w-full h-full object-cover" data-alt="Classic vinyl record cover art with prism" src="https://imgs.search.brave.com/0E2txGz-yYIf-sF0ytgcF4k-SH7j1vNJqOgdXyyG-rc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzYxMFJHSmxHMVpM/LmpwZw"/>
+<img alt="The Dark Side of the Moon" class="w-full h-full object-cover" data-alt="Classic vinyl record cover art with prism" src="https://picsum.photos/seed/darkside/400/400"/>
 </div>
 <div class="flex-1">
 <div class="flex justify-between items-start">
@@ -157,22 +182,22 @@
 </div>
 </div>
 </div>
+</div>
 <!-- Shipping Form (Airy design) -->
-<div class="pt-8">
+<div class="lg:col-span-7 pt-8">
 <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><span class="material-symbols-outlined">local_shipping</span> Endereço de Entrega</h3>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <div class="space-y-2">
 <label class="text-xs font-bold uppercase text-slate-400">Nome Completo</label>
-<input class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="Seu nome aqui" type="text"/>
+<input id="shipping-name" class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="Seu nome aqui" type="text"/>
 </div>
 <div class="space-y-2">
 <label class="text-xs font-bold uppercase text-slate-400">CEP</label>
-<input class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="00000-000" type="text"/>
+<input id="shipping-zip" class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="00000-000" type="text"/>
 </div>
 <div class="md:col-span-2 space-y-2">
 <label class="text-xs font-bold uppercase text-slate-400">Endereço</label>
-<input class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="Rua, número e bairro" type="text"/>
-</div>
+<input id="shipping-address" class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="Rua, número e bairro" type="text"/>
 </div>
 </div>
 </div>
@@ -191,18 +216,18 @@
 </div>
 <div class="pt-4 border-t border-slate-200 dark:border-border-dark flex justify-between items-end">
 <span class="text-lg font-medium">Total</span>
-<span class="text-3xl font-black text-primary">R$ 397,90</span>
+<span class="text-3xl font-black text-primary" id="cart-total">R$ 0,00</span>
 </div>
 </div>
 <!-- Payment Method Toggle -->
 <div class="mb-8">
 <label class="text-xs font-bold uppercase text-slate-400 mb-4 block">Selecione o Método de Pagamento</label>
 <div class="grid grid-cols-2 gap-4">
-<button class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-primary bg-primary/5 text-primary transition-all">
+<button id="payment-credit" data-payment="credit_card" class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-primary bg-primary/5 text-primary transition-all">
 <span class="material-symbols-outlined">credit_card</span>
 <span class="text-xs font-bold">Cartão de Crédito</span>
 </button>
-<button class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-slate-200 dark:border-border-dark hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+<button id="payment-pix" data-payment="pix" class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-slate-200 dark:border-border-dark hover:border-slate-300 dark:hover:border-slate-700 transition-all">
 <span class="material-symbols-outlined">qr_code_2</span>
 <span class="text-xs font-bold">PIX</span>
 </button>
@@ -213,22 +238,22 @@
 <div class="space-y-2">
 <label class="text-xs font-bold uppercase text-slate-400">Número do Cartão</label>
 <div class="relative">
-<input class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg pl-10 focus:ring-primary focus:border-primary" placeholder="0000 0000 0000 0000" type="text"/>
+<input id="payment-card-number" class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg pl-10 focus:ring-primary focus:border-primary" placeholder="0000 0000 0000 0000" type="text"/>
 <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400">payments</span>
 </div>
 </div>
 <div class="grid grid-cols-2 gap-4">
 <div class="space-y-2">
 <label class="text-xs font-bold uppercase text-slate-400">Data de Validade</label>
-<input class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="MM/YY" type="text"/>
+<input id="payment-card-expiration" class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="MM/YY" type="text"/>
 </div>
 <div class="space-y-2">
 <label class="text-xs font-bold uppercase text-slate-400">CVV</label>
-<input class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="123" type="text"/>
+<input id="payment-card-cvv" class="w-full bg-transparent border-slate-200 dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary" placeholder="123" type="text"/>
 </div>
 </div>
 </div>
-<button class="w-full bg-primary hover:bg-primary/90 text-white py-5 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3"><span class="material-symbols-outlined">lock</span> Finalizar Compra</button>
+<button id="checkout-button" class="w-full bg-primary hover:bg-primary/90 text-white py-5 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3"><span class="material-symbols-outlined">lock</span> Finalizar Compra</button>
 <div class="mt-6 flex items-center justify-center gap-6 text-slate-400">
 <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest"><span class="material-symbols-outlined text-sm">verified_user</span> SSL Seguro</div>
 <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest"><span class="material-symbols-outlined text-sm">airport_shuttle</span> Seguro</div>
@@ -275,4 +300,14 @@
 <p class="text-sm text-slate-400">© 2024 The Vintage Sound. Criado para audiófilos.</p>
 </div>
 </footer>
+<script src="api.js"></script>
+<script src="carrinho.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initUserNav();
+        updateCartBadge();
+        updateNavUser();
+        setupLogout();
+    });
+</script>
 </body></html>
