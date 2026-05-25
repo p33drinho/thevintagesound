@@ -48,6 +48,31 @@
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const navActions = document.querySelector('header .flex.items-center.gap-4');
+            if (navActions) {
+                const cartBtn = navActions.querySelector('button');
+                if (cartBtn) {
+                    const badge = cartBtn.querySelector('span:last-child');
+                    if (badge) badge.id = 'cart-badge';
+                }
+                const loginBtn = navActions.querySelector('a[href="login.html"]');
+                if (loginBtn) loginBtn.id = 'nav-login';
+                
+                const logoutBtn = document.createElement('button');
+                logoutBtn.id = 'nav-logout';
+                logoutBtn.className = 'hidden text-sm font-bold text-primary hover:underline';
+                logoutBtn.textContent = 'Sair';
+                navActions.insertBefore(logoutBtn, navActions.querySelector('div.size-9'));
+
+                const userGreet = document.createElement('span');
+                userGreet.id = 'nav-user-name';
+                userGreet.className = 'text-sm font-medium text-white hidden md:block';
+                navActions.insertBefore(userGreet, logoutBtn);
+            }
+        });
+    </script>
 <!-- Top Navigation Bar -->
 <header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-border-dark px-6 lg:px-20 py-4">
 <div class="max-w-[1440px] mx-auto flex items-center justify-between gap-8">
@@ -67,8 +92,8 @@
 <div class="flex items-center gap-6 lg:gap-10">
 <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
 <a class="text-primary border-b-2 border-primary pb-1" href="loja.html">Loja</a>
-<a class="hover:text-primary transition-colors" href="#">Assinaturas</a>
-<a class="hover:text-primary transition-colors" href="#">Curadorias</a>
+<a class="hover:text-primary transition-colors" href="login.html">Assinaturas</a>
+<a class="hover:text-primary transition-colors" href="edicoes_passadas.html">Curadorias</a>
 </nav>
 <div class="flex items-center gap-4">
 <button class="relative p-2 text-text-muted hover:text-white transition-colors" onclick="window.location.href='carrinho.html'">
@@ -106,22 +131,22 @@
 <h3 class="text-xs font-bold uppercase tracking-widest text-text-muted mb-6">Gêneros</h3>
 <ul class="space-y-1">
 <li>
-<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-white bg-primary/10 border-l-2 border-primary" href="#"><span class="material-symbols-outlined text-lg">music_note</span> Rock</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-white bg-primary/10 border-l-2 border-primary" href="#" data-genre="Rock"><span class="material-symbols-outlined text-lg">music_note</span> Rock</a>
 </li>
 <li>
-<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#"><span class="material-symbols-outlined text-lg">music_note</span> MPB</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#" data-genre="MPB"><span class="material-symbols-outlined text-lg">music_note</span> MPB</a>
 </li>
 <li>
-<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#"><span class="material-symbols-outlined text-lg">music_note</span> Hip-hop</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#" data-genre="Hip-hop"><span class="material-symbols-outlined text-lg">music_note</span> Hip-hop</a>
 </li>
 <li>
-<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#"><span class="material-symbols-outlined text-lg">music_note</span> Soul</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#" data-genre="Soul"><span class="material-symbols-outlined text-lg">music_note</span> Soul</a>
 </li>
 <li>
-<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#"><span class="material-symbols-outlined text-lg">music_note</span> Jazz</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#" data-genre="Jazz"><span class="material-symbols-outlined text-lg">music_note</span> Jazz</a>
 </li>
 <li>
-<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#"><span class="material-symbols-outlined text-lg">music_note</span> Blues</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-text-muted hover:text-white hover:bg-surface-dark transition-all" href="#" data-genre="Blues"><span class="material-symbols-outlined text-lg">music_note</span> Blues</a>
 </li>
 </ul>
 </div>
@@ -155,7 +180,7 @@
 <!-- Vinyl Card 1 -->
 <div class="group cursor-pointer">
 <div class="relative aspect-square mb-4 overflow-hidden rounded-lg bg-surface-dark shadow-xl ring-1 ring-white/5">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Classic rock album cover aesthetic" src="https://imgs.search.brave.com/0E2txGz-yYIf-sF0ytgcF4k-SH7j1vNJqOgdXyyG-rc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzYxMFJHSmxHMVpM/LmpwZw"/>
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Classic rock album cover aesthetic" src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRwdzzXjDEBRmzxvPtHjdvIVHBnAjyNewlrHGbz0sG1IJhNz3fWFMxRBOJhvxJh-IrYBC_Ed7obLyCZA0XLDENLlFCLFFA2ZyZIEQ7OXDo&usqp=CAc"/>
 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
 <button class="size-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">add_shopping_cart</span>
@@ -173,7 +198,7 @@
 <!-- Vinyl Card 2 -->
 <div class="group cursor-pointer">
 <div class="relative aspect-square mb-4 overflow-hidden rounded-lg bg-surface-dark shadow-xl ring-1 ring-white/5">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Modern jazz album cover aesthetic" src="https://imgs.search.brave.com/TG63vgl25wmywwpHvHEqh-R4HReo00leONiuedlXadg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/OTFFVXB1OVpvN0wu/anBn"/>
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Modern jazz album cover aesthetic" src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRwdzzXjDEBRmzxvPtHjdvIVHBnAjyNewlrHGbz0sG1IJhNz3fWFMxRBOJhvxJh-IrYBC_Ed7obLyCZA0XLDENLlFCLFFA2ZyZIEQ7OXDo&usqp=CAc"/>
 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
 <button class="size-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">add_shopping_cart</span>
@@ -190,7 +215,7 @@
 <!-- Vinyl Card 3 -->
 <div class="group cursor-pointer">
 <div class="relative aspect-square mb-4 overflow-hidden rounded-lg bg-surface-dark shadow-xl ring-1 ring-white/5">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Vintage Brazilian music album cover" src="https://imgs.search.brave.com/FgD0lUohcfTxgVcVPPuDeQM5IXpMJIhEx8KeQlin180/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tb25r/ZXlidXp6LmNvbS5i/ci93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MC8wOC9naWxiZXJ0/by1naWwtMTk2OS5w/bmc"/>
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Vintage Brazilian music album cover" src="https://picsum.photos/seed/bossanova/400/400"/>
 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
 <button class="size-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">add_shopping_cart</span>
@@ -208,7 +233,7 @@
 <!-- Vinyl Card 4 -->
 <div class="group cursor-pointer">
 <div class="relative aspect-square mb-4 overflow-hidden rounded-lg bg-surface-dark shadow-xl ring-1 ring-white/5">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Classic hip hop album photography" src="https://imgs.search.brave.com/0jmzOZ3la_2XH642-piwKGN-kq_s9adNIXyjyyZE_o4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLmRp/c2NvZ3MuY29tLy01/Y2JaN2RvTGhEai1H/alQ2NWNDWVhwWVdL/U01rYWJCLXdMUEZK/YXl3em8vcnM6Zml0/L2c6c20vcTo0MC9o/OjMwMC93OjMwMC9j/ek02THk5a2FYTmpi/MmR6L0xXUmhkR0Zp/WVhObExXbHQvWVdk/bGN5OVNMVEUzTWpV/eC9NVEk1TFRFMk5q/VXlOamsxL09Ea3RO/VGt6TWk1cWNHVm4u/anBlZw"/>
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Classic hip hop album photography" src="https://picsum.photos/seed/illmatic/400/400"/>
 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
 <button class="size-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">add_shopping_cart</span>
@@ -225,7 +250,7 @@
 <!-- Vinyl Card 5 -->
 <div class="group cursor-pointer">
 <div class="relative aspect-square mb-4 overflow-hidden rounded-lg bg-surface-dark shadow-xl ring-1 ring-white/5">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Soul music album artwork" src="https://imgs.search.brave.com/Oh8_rFTWFVkl5yUKx5jWaFfNlwP7whJrW0knfqas-WY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvcHQvdGh1bWIv/Yy9jNC9DYXBhTWFy/dmluX0dheWUuanBn/LzI1MHB4LUNhcGFN/YXJ2aW5fR2F5ZS5q/cGc"/>
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Soul music album artwork" src="https://picsum.photos/seed/whatsgoinon/400/400"/>
 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
 <button class="size-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">add_shopping_cart</span>
@@ -242,7 +267,7 @@
 <!-- Vinyl Card 6 -->
 <div class="group cursor-pointer">
 <div class="relative aspect-square mb-4 overflow-hidden rounded-lg bg-surface-dark shadow-xl ring-1 ring-white/5">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Classic blues musician portrait album" src="https://imgs.search.brave.com/RJ1TJAgnxAugWzxNgyT0XAlW45zfdSAKR7Dqmd_54jM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzcxUy03UDREZEJM/LmpwZw"/>
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Classic blues musician portrait album" src="https://picsum.photos/seed/blues1/400/400"/>
 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
 <button class="size-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">add_shopping_cart</span>
@@ -260,7 +285,7 @@
 <!-- Vinyl Card 7 -->
 <div class="group cursor-pointer">
 <div class="relative aspect-square mb-4 overflow-hidden rounded-lg bg-surface-dark shadow-xl ring-1 ring-white/5">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Abstract minimal music album cover" src="https://imgs.search.brave.com/hkb0LlgIMoTV_v7Cd0g5Dk-RM85gx_2-DF1Fn18RysY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9odHRw/Mi5tbHN0YXRpYy5j/b20vRF9RX05QXzJY/Xzg5Nzc1OS1NTEI0/NDU1MTQ1MDgyN18w/MTIwMjEtRS53ZWJw"/>
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Abstract minimal music album cover" src="https://picsum.photos/seed/joydivision/400/400"/>
 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
 <button class="size-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">add_shopping_cart</span>
@@ -277,7 +302,7 @@
 <!-- Vinyl Card 8 -->
 <div class="group cursor-pointer">
 <div class="relative aspect-square mb-4 overflow-hidden rounded-lg bg-surface-dark shadow-xl ring-1 ring-white/5">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Psych rock colorful album cover" src="https://imgs.search.brave.com/-2zvFqffmXBGm7hzuUPGrzoStlJf-mdLIxtTtSRy164/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9waXhl/bGZyYW1lLmRlc2ln/bi93cC1jb250ZW50/L3VwbG9hZHMvMjAy/NC8xMC9UYW1lLUlt/cGFsYS1DdXJyZW50/c19BbGJ1bS1Db3Zl/ci1sYXJnZS5qcGc"/>
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Psych rock colorful album cover" src="https://picsum.photos/seed/tameimpala/400/400"/>
 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
 <button class="size-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">add_shopping_cart</span>
@@ -357,4 +382,14 @@
 <p>© 2024 The Vintage Sound Records. Todos os direitos reservados.</p>
 </div>
 </footer>
+<script src="api.js"></script>
+<script src="loja.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initUserNav();
+        updateCartBadge();
+        updateNavUser();
+        setupLogout();
+    });
+</script>
 </body></html>
